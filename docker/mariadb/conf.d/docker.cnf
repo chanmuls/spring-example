@@ -1,0 +1,59 @@
+[client]
+default-character-set = utf8mb4
+
+[mysql]
+default-character-set = utf8mb4
+
+[mysqld]
+character-set-server = utf8mb4
+character-set-client-handshake = FALSE
+character-set-server = utf8mb4
+collation-server = utf8mb4_unicode_ci
+default-time-zone='+9:00'
+
+skip-host-cache
+skip-name-resolve
+
+max_connections		= 100
+connect_timeout		= 5
+wait_timeout		= 600
+max_allowed_packet	= 16M
+thread_cache_size       = 128
+sort_buffer_size	= 4M
+bulk_insert_buffer_size	= 16M
+tmp_table_size		= 32M
+max_heap_table_size	= 32M
+binlog_format=mixed
+default-time-zone='+9:00'
+
+#
+# * InnoDB
+#
+# InnoDB is enabled by default with a 10MB datafile in /var/lib/mysql/.
+# Read the manual for more InnoDB related options. There are many!
+default_storage_engine	= InnoDB
+innodb_buffer_pool_size	= 256M
+innodb_log_buffer_size	= 8M
+innodb_file_per_table	= 1
+innodb_open_files	= 400
+innodb_io_capacity	= 400
+innodb_flush_method	= O_DIRECT
+
+#
+# * Query Cache Configuration
+#
+# Cache only tiny result sets, so we can fit more in the query cache.
+query_cache_limit		= 128K
+query_cache_size		= 64M
+slow_query_log_file	= /config/log/mysql/mariadb-slow.log
+long_query_time = 10
+#log_slow_rate_limit	= 1000
+log_slow_verbosity	= query_plan
+
+[mysqldump]
+quick
+quote-names
+max_allowed_packet	= 16M
+
+[isamchk]
+key_buffer_size		= 16M

@@ -1,0 +1,21 @@
+spring:
+  batch:
+    jdbc:
+      initialize-schema: never
+    datasource:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:13306/dbexample?autoReconnect=true&useSSL=false
+      username: example
+      password: 1234
+      hikari:
+        maximum-pool-size: 30
+        minimum-idle: 5
+        pool-name: write
+
+async:
+  thread:
+    max:
+      pool: 5
+    core:
+      pool: 4
+    queue: 100

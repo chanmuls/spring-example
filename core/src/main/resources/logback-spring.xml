@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="5 minutes" debug="false">
+    <springProperty scope="context" name="application.name" source="spring.application.name"/>
+    <property name="appLogPath" value="/logs/java/${application.name}"/>
+    <property name="console.format"
+              value="* %-20(%cyan(%date{HH:mm:ss.SSS}) [%thread]) %highlight(%-5level) %magenta(%marker|%logger{36}): %msg%n%caller{2, DISPLAY_CALLER_EVAL}%rEx"/>
+    <property name="file.format"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(${LOG_LEVEL_PATTERN:-%5p}) ${PID:- } [%t] %-40.40logger{39} [%L] : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <!-- local, test -->
+    <springProfile name="local,test">
+        <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>${console.format}</pattern>
+            </encoder>
+        </appender>
+
+        <logger name="com.chanmul" level="DEBUG"/>
+        <logger name="com.zaxxer.hikari" level="DEBUG"/>
+        <logger name="org.hibernate.SQL" level="DEBUG"/>
+        <logger name="org.hibernate.tool.hbm2ddl" level="DEBUG"/>
+        <logger name="org.hibernate.type" level="TRACE"/>
+        <logger name="org.hibernate.stat" level="DEBUG"/>
+        <logger name="org.hibernate.type.BasicTypeRegistry" level="WARN"/>
+        <logger name="org.springframework.security" level="DEBUG"/>
+        <logger name="org.springframework.http.server.reactive" level="DEBUG"/>
+        <logger name="org.springframework.web.reactive" level="DEBUG"/>
+        <logger name="org.springframework.boot.autoconfigure.web" level="DEBUG"/>
+        <logger name="reactor.netty" level="TRACE"/>
+
+        <root level="INFO">
+            <appender-ref ref="STDOUT"/>
+        </root>
+    </springProfile>
+
+    <!-- dev, prod -->
+    <springProfile name="dev,prod">
+        <appender name="FILE-NORMAL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${appLogPath}/app.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>${appLogPath}/app.log.%d{yyyy-MM-dd}.%i</fileNamePattern>
+                <maxHistory>10</maxHistory>
+                <maxFileSize>200MB</maxFileSize>
+                <totalSizeCap>600MB</totalSizeCap>
+            </rollingPolicy>
+            <append>true</append>
+            <encoder>
+                <charset>UTF-8</charset>
+                <pattern>${file.format}%ex{0}</pattern>
+            </encoder>
+        </appender>
+
+        <appender name="FILE-EXCEPTION" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${appLogPath}/exception.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>${appLogPath}/exception.log.%d{yyyy-MM-dd}.%i</fileNamePattern>
+                <maxHistory>10</maxHistory>
+                <maxFileSize>200MB</maxFileSize>
+                <totalSizeCap>400MB</totalSizeCap>
+            </rollingPolicy>
+            <append>true</append>
+            <encoder>
+                <charset>UTF-8</charset>
+                <pattern>${file.format}%ex</pattern>
+            </encoder>
+        </appender>
+
+        <appender name="ASYNC-FILE" class="ch.qos.logback.classic.AsyncAppender" discardingThreshold="0">
+            <appender-ref ref="FILE-NORMAL"/>
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>INFO</level>
+            </filter>
+        </appender>
+
+        <appender name="ASYNC-FILE-EXCEPTION" class="ch.qos.logback.classic.AsyncAppender" discardingThreshold="0">
+            <appender-ref ref="FILE-EXCEPTION"/>
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <root>
+            <appender-ref ref="ASYNC-FILE"/>
+            <appender-ref ref="ASYNC-FILE-EXCEPTION"/>
+        </root>
+    </springProfile>
+</configuration>

@@ -1,0 +1,21 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    stream:
+      bindings:
+        kinesisEvent-in-0:
+          destination: prod_kinesis_event
+          group: kinesis-event-group
+          content-type: text/json
+      kinesis:
+        binder:
+          checkpoint:
+            table: prod_kinesis_meta_data_store
+          locks:
+            table: prod_kinesis_lock_registry
+          auto-create-stream: true
+          auto-add-shards: false
+    function:
+      definition: kinesisEvent;

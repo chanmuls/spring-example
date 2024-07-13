@@ -1,0 +1,18 @@
+spring:
+  profiles:
+    active: local
+  application:
+    name: consumer
+    description: "consumer"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+      base-path: /monitor
+      path-mapping:
+        health: healthcheck
+  health:
+    binders:
+      enabled: false

@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:DBEXAMPLE;INIT=CREATE SCHEMA IF NOT EXISTS DBEXAMPLE;DB_CLOSE_ON_EXIT=FALSE;
+    username: sa
+    password:
+    hikari:
+      maximum-pool-size: 30
+      minimum-idle: 5
+      pool-name: write
+
+  jpa:
+    open-in-view: false
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        show_sql: false
+        use_sql_comments: true
+        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+
+  h2:
+    console:
+      path: /h2-console
+      enabled: true

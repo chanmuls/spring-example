@@ -1,0 +1,7 @@
+spring:
+  jackson:
+    time-zone: "Asia/Seoul"
+    deserialization:
+      read-unknown-enum-values-as-null: true
+      fail-on-ignored-properties: true
+    default-property-inclusion: non_null

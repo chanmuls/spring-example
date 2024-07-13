@@ -1,0 +1,29 @@
+spring:
+  profiles:
+    active: local
+  application:
+    name: web
+    description: "web"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+      base-path: /monitor
+      path-mapping:
+        health: healthcheck
+  health:
+    binders:
+      enabled: false
+
+server:
+  servlet:
+    session:
+      timeout: 30m
+      cookie:
+        name: _ex
+        http-only: true
+        domain: chanmul.com
+        same-site: strict
+        path: /

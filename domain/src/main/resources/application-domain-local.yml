@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:13306/dbexample?autoReconnect=true&useSSL=false
+    username: example
+    password: 1234
+    hikari:
+      maximum-pool-size: 30
+      minimum-idle: 5
+      pool-name: write
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        show_sql: false
+        use_sql_comments: true
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+
+  h2:
+    console:
+      path: /h2-console
+      enabled: false

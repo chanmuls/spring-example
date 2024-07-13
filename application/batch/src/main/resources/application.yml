@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active: local
+  application:
+    name: batch
+    description: "batch"
+  jackson:
+    time-zone: "Asia/Seoul"
+  main:
+    allow-bean-definition-overriding: true
+    web-application-type: none
+  batch:
+    job:
+      name: ${job.name:NONE}
+    jdbc:
+      initialize-schema: embedded
+      table-prefix: "BATCH_"
